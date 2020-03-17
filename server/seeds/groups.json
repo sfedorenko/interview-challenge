@@ -1,0 +1,16 @@
+{
+  "model": "Group",
+  "documents": [
+    { "name": "Blues" },
+    { "name": "Browns" },
+    { "name": "Cyans" },
+    { "name": "Greens" },
+    { "name": "Greys" },
+    { "name": "Oranges" },
+    { "name": "Pinks" },
+    { "name": "Purples" },
+    { "name": "Reds" },
+    { "name": "Whites" },
+    { "name": "Yellows" }
+  ]
+}

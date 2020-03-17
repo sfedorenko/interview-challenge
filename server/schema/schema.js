@@ -1,6 +1,6 @@
 const graphql = require('graphql');
-const Color = require('../models/color');
-const Group = require('../models/group');
+const Color = require('../models/Color');
+const Group = require('../models/Group');
 
 const {
     GraphQLObjectType, GraphQLString,

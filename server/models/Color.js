@@ -7,7 +7,7 @@ const colorSchema = new Schema({
         required: true
     },
     hex: {
-        type: Number,
+        type: String,
         required: true
     },
     hue: {
