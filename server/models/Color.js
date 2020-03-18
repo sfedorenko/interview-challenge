@@ -18,7 +18,7 @@ const colorSchema = new Schema({
         type: Number,
         required: true
     },
-    group_id: {
+    groupId: {
         type: mongoose.Schema.Types.ObjectID,
         ref: 'Group'
     }

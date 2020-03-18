@@ -8,10 +8,9 @@ const {
     GraphQLList, GraphQLNonNull
 } = graphql;
 
-//Schema defines data on the Graph like object types, relation between
+//Schema defines data on the Graph like object types(color type), relation between
 //these object types and describes how it can reach into the graph to interact with
 //the data to retrieve or mutate the data
-
 const ColorType = new GraphQLObjectType({
     name: 'Color',
     fields: () => ({
@@ -23,7 +22,7 @@ const ColorType = new GraphQLObjectType({
         group: {
             type: GroupType,
             resolve(parent, args) {
-                return Group.findById(parent.group_id);
+                return Group.findById(parent.groupId);
             }
         }
     })
@@ -37,22 +36,26 @@ const GroupType = new GraphQLObjectType({
         color: {
             type: new GraphQLList(ColorType),
             resolve(parent, args) {
-                return Color.find({group_id: parent.id});
+                return Color.find({groupId: parent.id});
             }
         }
     })
 });
 
 //RootQuery describe how users can use the graph and grab data.
-//E.g Root query to get all colors, get all groups, get a particular
+//E.g Root query to get all groups, get all colors, get a particular
 //color or get a particular group.
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         color: {
             type: ColorType,
+            //argument passed by the user while making the query
             args: {id: {type: GraphQLID}},
             resolve(parent, args) {
+                //Here we define how to get data from database source
+                //this will return the book with id passed in argument
+                //by the user
                 return Color.findById(args.id);
             }
         },
@@ -74,7 +77,7 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 return Group.find({});
             }
-        },
+        }
     }
 });
 
@@ -86,7 +89,7 @@ const Mutation = new GraphQLObjectType({
             type: GroupType,
             args: {
                 //GraphQLNonNull make these field required
-                name: {type: new GraphQLNonNull(GraphQLString)}
+                name: {type: new GraphQLNonNull(GraphQLString)},
             },
             resolve(parent, args) {
                 let group = new Group({
@@ -102,15 +105,14 @@ const Mutation = new GraphQLObjectType({
                 hue: {type: new GraphQLNonNull(GraphQLFloat)},
                 saturation: {type: new GraphQLNonNull(GraphQLFloat)},
                 lightness: {type: new GraphQLNonNull(GraphQLFloat)},
-                group_id: {type: GraphQLID}
+                groupId: {type: GraphQLID}
             },
             resolve(parent, args) {
                 let color = new Color({
-                    hex: args.hex,
                     hue: args.hue,
-                    saturation: args.hue,
-                    lightness: args.hue,
-                    group_id: args.group_id
+                    saturation: args.saturation,
+                    lightness: args.lightness,
+                    groupId: args.groupId
                 });
                 return color.save();
             }

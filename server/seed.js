@@ -82,15 +82,15 @@ function hslToHex(h, s, l) {
 /**
  * Create a group collection.
  *
- * @param   {array}  data     The array of group names
+ * @param   {array}  names    The array of group names
  * @return  {array}           The array of objects of groups
  */
-async function createGroups(data) {
+async function createGroups(names) {
     try {
         // Clear group collection
         await Group.deleteMany();
         let groupsArr = [];
-        data.forEach(name => {
+        names.forEach(name => {
             groupsArr.push({ name: name });
         });
         // Create groups in the collection
@@ -120,14 +120,14 @@ async function createColors() {
                 for (let l = 0; l <= 100; l += 10) {
                     let hex = hslToHex(h, s, l),
                         group = groups.filter(obj => obj.name === colorClassify(h, s, l)),
-                        group_id = mongoose.Types.ObjectId(group._id).toHexString();
+                        groupId = group[0]._id;
 
                     colorsArr.push({
                         hex: hex,
                         hue: h,
                         saturation: s,
                         lightness: l,
-                        group_id: group_id,
+                        groupId: groupId,
                     });
                 }
             }
