@@ -16,7 +16,6 @@ const ColorType = new GraphQLObjectType({
     name: 'Color',
     fields: () => ({
         id: {type: GraphQLID},
-        name: {type: GraphQLString},
         hex: {type: GraphQLString},
         hue: {type: GraphQLFloat},
         saturation: {type: GraphQLFloat},
@@ -99,7 +98,6 @@ const Mutation = new GraphQLObjectType({
         addColor: {
             type: ColorType,
             args: {
-                name: {type: new GraphQLNonNull(GraphQLString)},
                 hex: {type: new GraphQLNonNull(GraphQLString)},
                 hue: {type: new GraphQLNonNull(GraphQLFloat)},
                 saturation: {type: new GraphQLNonNull(GraphQLFloat)},
@@ -108,7 +106,6 @@ const Mutation = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 let color = new Color({
-                    name: args.name,
                     hex: args.hex,
                     hue: args.hue,
                     saturation: args.hue,
