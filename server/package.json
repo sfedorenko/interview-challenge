@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "seed": "node seed.js"
+    "start": "node index.js",
+    "seed": "node seed.js",
+    "dev": "nodemon index.js"
   },
   "author": "Serhii Fedorenko",
   "license": "ISC",

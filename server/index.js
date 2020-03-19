@@ -14,7 +14,7 @@ mongoose.connection.once('open', () => {
 
 //This route will be used as an endpoint to interact with Graphql,
 //All queries will go through this route.
-app.use('/graphql', graphqlHTTP({
+app.use('/', graphqlHTTP({
     //Directing express-graphql to use this schema to map out the graph
     schema,
     //Directing express-graphql to use graphiql when goto '/graphql' address in the browser
@@ -22,6 +22,7 @@ app.use('/graphql', graphqlHTTP({
     graphiql: true
 }));
 
-app.listen(3000, () => {
-    console.log('Listening on port 3000');
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log('Node server listening on port ' + PORT);
 });
