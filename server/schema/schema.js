@@ -4,7 +4,7 @@ const Group = require('../models/Group');
 
 const {
     GraphQLObjectType, GraphQLString,
-    GraphQLID, GraphQLFloat, GraphQLSchema,
+    GraphQLID, GraphQLInt, GraphQLFloat, GraphQLSchema,
     GraphQLList, GraphQLNonNull
 } = graphql;
 
@@ -18,11 +18,28 @@ const ColorType = new GraphQLObjectType({
         hex: {type: GraphQLString},
         hue: {type: GraphQLFloat},
         saturation: {type: GraphQLFloat},
+        lightness: {type: GraphQLFloat}
+    })
+});
+
+const ColorDetailType = new GraphQLObjectType({
+    name: 'ColorDetail',
+    fields: () => ({
+        id: {type: GraphQLID},
+        hex: {type: GraphQLString},
+        hue: {type: GraphQLFloat},
+        saturation: {type: GraphQLFloat},
         lightness: {type: GraphQLFloat},
         group: {
             type: GroupType,
             resolve(parent, args) {
                 return Group.findById(parent.groupId);
+            }
+        },
+        similar: {
+            type: new GraphQLList(ColorType),
+            resolve(parent, args) {
+                return Color.find({hue: parent.hue, saturation: parent.saturation});
             }
         }
     })
@@ -32,13 +49,7 @@ const GroupType = new GraphQLObjectType({
     name: 'Group',
     fields: () => ({
         id: {type: GraphQLID},
-        name: {type: GraphQLString},
-        color: {
-            type: new GraphQLList(ColorType),
-            resolve(parent, args) {
-                return Color.find({groupId: parent.id});
-            }
-        }
+        name: {type: GraphQLString}
     })
 });
 
@@ -48,8 +59,8 @@ const GroupType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        color: {
-            type: ColorType,
+        colorDetail: {
+            type: ColorDetailType,
             //argument passed by the user while making the query
             args: {id: {type: GraphQLID}},
             resolve(parent, args) {
@@ -61,15 +72,36 @@ const RootQuery = new GraphQLObjectType({
         },
         colors: {
             type: new GraphQLList(ColorType),
+            args: {
+                groupId: {type: GraphQLID},
+                limit: {type: GraphQLInt},
+                skip: {type: GraphQLInt}
+            },
             resolve(parent, args) {
-                return Color.find({});
+                let query = {},
+                    limit = args.limit || 12,
+                    skip = args.skip || 0;
+                if(args.groupId) query.groupId = args.groupId;
+                return Color.find(query).limit(limit).skip(skip);
             }
         },
-        group: {
-            type: GroupType,
-            args: {id: {type: GraphQLID}},
+        colorsTotal: {
+            type: GraphQLInt,
+            args: {
+                groupId: {type: GraphQLID}
+            },
             resolve(parent, args) {
-                return Group.findById(args.id);
+                let query = {};
+                if(args.groupId) query.groupId = args.groupId;
+                return Color.find(query).count();
+            }
+        },
+        colorRandom: {
+            type: ColorType,
+            async resolve(parent, args) {
+                let count = await Color.count();
+                let random = Math.floor(Math.random() * count);
+                return await Color.findOne().skip(random);
             }
         },
         groups: {
@@ -81,48 +113,8 @@ const RootQuery = new GraphQLObjectType({
     }
 });
 
-//Very similar to RootQuery helps user to add/update to the database.
-const Mutation = new GraphQLObjectType({
-    name: 'Mutation',
-    fields: {
-        addGroup: {
-            type: GroupType,
-            args: {
-                //GraphQLNonNull make these field required
-                name: {type: new GraphQLNonNull(GraphQLString)},
-            },
-            resolve(parent, args) {
-                let group = new Group({
-                    name: args.name
-                });
-                return group.save();
-            }
-        },
-        addColor: {
-            type: ColorType,
-            args: {
-                hex: {type: new GraphQLNonNull(GraphQLString)},
-                hue: {type: new GraphQLNonNull(GraphQLFloat)},
-                saturation: {type: new GraphQLNonNull(GraphQLFloat)},
-                lightness: {type: new GraphQLNonNull(GraphQLFloat)},
-                groupId: {type: GraphQLID}
-            },
-            resolve(parent, args) {
-                let color = new Color({
-                    hue: args.hue,
-                    saturation: args.saturation,
-                    lightness: args.lightness,
-                    groupId: args.groupId
-                });
-                return color.save();
-            }
-        }
-    }
-});
-
 //Creating a new GraphQL Schema, with options query which defines query
 //we will allow users to use when they are making request.
 module.exports = new GraphQLSchema({
-    query: RootQuery,
-    mutation: Mutation
+    query: RootQuery
 });

@@ -1,0 +1,55 @@
+.color-list,
+.similar-color-list {
+  padding: 1rem 2rem;
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 -1rem;
+
+  .color {
+    width: calc(50% - 2rem);
+    margin: 1rem;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,.25);
+    border-radius: 10px;
+    border: solid 1px $lighten-grey;
+    background-color: $lighten-grey;
+    overflow: hidden;
+    transition: all .2s ease;
+
+    @include media-breakpoint-up(md) {
+      width: calc(25% - 2rem);
+    }
+
+    &:hover,
+    &:focus {
+      box-shadow: 0 0 2px 0 rgba(0,0,0,.25);
+    }
+
+    a {
+      display: block;
+      padding-top: 5rem;
+      color: $black;
+      text-decoration: none;
+
+      .name {
+        display: block;
+        margin-bottom: 0;
+        padding: .5rem;
+        font-size: 1rem;
+        background-color: $white;
+        border: solid 1px $lighten-grey;
+      }
+    }
+  }
+}
+
+.similar-color-list {
+  padding: 2rem 0 0 0;
+
+  .color {
+    width: calc(50% - 2rem);
+
+    @include media-breakpoint-up(md) {
+      width: calc(20% - 2rem);
+    }
+  }
+}

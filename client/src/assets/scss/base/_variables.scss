@@ -1,0 +1,18 @@
+// Colors
+$black: #363c3c !default;
+$white: #ffffff !default;
+$lighten-grey: #fdfdfd !default;
+
+// Typography
+$font-family-base: 'Source Serif Pro', serif !default;
+$font-size-base: 16px  !default;
+
+// Breakpoints
+$breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px,
+        xxl: 1500px
+) !default;

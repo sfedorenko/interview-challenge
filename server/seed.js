@@ -11,7 +11,7 @@ mongoose.connection.once('open', () => {
     runMigration();
 });
 
-const groupNames = ['Blacks', 'Whites', 'Grays', 'Reds', 'Yellows', 'Greens', 'Cyans', 'Blues', 'Magentas'];
+const groupNames = ['blacks', 'whites', 'grays', 'reds', 'yellows', 'greens', 'cyans', 'blues', 'magentas'];
 
 /**
  * Converts an HSL color value to name of color group.
@@ -22,16 +22,16 @@ const groupNames = ['Blacks', 'Whites', 'Grays', 'Reds', 'Yellows', 'Greens', 'C
  * @return  {string}          The name of color group
  */
 function colorClassify(h, s, l) {
-    if (l < 20)   return 'Blacks';
-    if (l > 80)   return 'Whites';
-    if (s < 25)   return 'Grays';
-    if (h < 30)   return 'Reds';
-    if (h < 90)   return 'Yellows';
-    if (h < 150)  return 'Greens';
-    if (h < 210)  return 'Cyans';
-    if (h < 270)  return 'Blues';
-    if (h < 330)  return 'Magentas';
-    return 'Reds';
+    if (l < 20)   return 'blacks';
+    if (l > 80)   return 'whites';
+    if (s < 25)   return 'grays';
+    if (h < 30)   return 'reds';
+    if (h < 90)   return 'yellows';
+    if (h < 150)  return 'greens';
+    if (h < 210)  return 'cyans';
+    if (h < 270)  return 'blues';
+    if (h < 330)  return 'magentas';
+    return 'reds';
 }
 
 /**
@@ -116,8 +116,8 @@ async function createColors() {
         let colorsArr = [];
         // Generate array of colors objects
         for (let h = 0; h <= 360; h += 10) {
-            for (let s = 0; s <= 100; s += 10) {
-                for (let l = 0; l <= 100; l += 10) {
+            for (let s = 5; s < 100; s += 10) {
+                for (let l = 5; l < 100; l += 10) {
                     let hex = hslToHex(h, s, l),
                         group = groups.filter(obj => obj.name === colorClassify(h, s, l)),
                         groupId = group[0]._id;

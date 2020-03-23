@@ -1,0 +1,15 @@
+// Mixins
+@import 'mixin/breakpoints';
+
+// Base
+@import 'base/fonts';
+@import 'base/variables';
+@import 'base/reboot';
+
+// Declarations specific to the project, organized according to the sections represented
+@import 'layout/source';
+@import 'layout/header';
+@import 'layout/sidebar';
+@import 'layout/color-list';
+@import 'layout/color-details';
+@import 'layout/pagination';

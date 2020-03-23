@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  height: 100px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+  background-color: #363c3c;
+  z-index: 100;
+
+  @include media-breakpoint-up(md) {
+    position: relative;
+    top: auto;
+    left: auto;
+  }
+
+  .logo {
+    width: 52px;
+    height: 52px;
+  }
+}

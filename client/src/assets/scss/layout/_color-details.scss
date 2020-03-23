@@ -1,0 +1,18 @@
+.color-details {
+  width: 100%;
+  padding: 2rem;
+
+  .color-primary {
+    border-radius: 10px;
+    border: solid 1px $black;
+    overflow: hidden;
+
+    .name {
+      margin-top: 40vh;
+      margin-bottom: 0;
+      padding: 1.25rem;
+      font-size: 2rem;
+      background-color: $white;
+    }
+  }
+}

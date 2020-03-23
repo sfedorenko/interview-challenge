@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const colorSchema = new Schema({
     hex: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     hue: {
         type: Number,

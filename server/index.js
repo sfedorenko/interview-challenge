@@ -2,7 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
+const cors = require('cors');
 const app = express();
+
 
 const mongoose = require('mongoose');
 
@@ -12,13 +14,16 @@ mongoose.connection.once('open', () => {
     console.log('Conneted to database');
 });
 
-//This route will be used as an endpoint to interact with Graphql,
-//All queries will go through this route.
+// allow cross-origin requests
+app.use(cors());
+
+// This route will be used as an endpoint to interact with Graphql,
+// All queries will go through this route.
 app.use('/', graphqlHTTP({
-    //Directing express-graphql to use this schema to map out the graph
+    // Directing express-graphql to use this schema to map out the graph
     schema,
-    //Directing express-graphql to use graphiql when goto '/graphql' address in the browser
-    //which provides an interface to make GraphQl queries
+    // Directing express-graphql to use graphiql when goto '/graphql' address in the browser
+    // which provides an interface to make GraphQl queries
     graphiql: true
 }));
 
