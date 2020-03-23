@@ -8,7 +8,6 @@ function ColorSimilar({colors, currentId}) {
     let delta = 2,
         current = colors.map(e => e.id).indexOf(currentId) + 1,
         total = colors.length,
-        list = [],
         pageLimit = 2 * delta + 1;
     let upperLimit, lowerLimit = upperLimit = Math.min(current, total);
 
