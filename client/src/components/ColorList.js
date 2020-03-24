@@ -6,8 +6,9 @@ import ColorNode from './ColorNode';
 
 function ColorList({match}) {
     const [page, setPage] = useState(1);
-    const limit = 12;
+    const limit = parseInt(process.env.REACT_APP_LIST_LIMIT) || 12;
 
+    // Reset page number to initial on path change
     useEffect(() => {
         setPage(1);
     }, [match]);

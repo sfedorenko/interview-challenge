@@ -3,9 +3,11 @@ import ColorNode from './ColorNode';
 import {compareValues} from '../misc/compare';
 
 function ColorSimilar({colors, currentId}) {
+    // Sort colors by lightness
     colors.sort(compareValues('lightness', 'asc'));
 
-    let delta = 2,
+    // Create array of objects with current color and 2 neighbors
+    let delta = parseInt(process.env.REACT_APP_SIMILAR_COLORS_DELTA) || 2,
         current = colors.map(e => e.id).indexOf(currentId) + 1,
         total = colors.length,
         pageLimit = 2 * delta + 1;
@@ -30,7 +32,7 @@ function ColorSimilar({colors, currentId}) {
 
     return (
         <ul className="similar-color-list">
-            {similarColors.map(color => (<ColorNode color={color}/>))}
+            {similarColors.map(color => (<ColorNode key={color.id} color={color}/>))}
         </ul>
     );
 }
